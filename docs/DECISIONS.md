@@ -30,13 +30,19 @@ OSRM returns complete GeoJSON road geometry and distance/duration annotations fo
 
 OSRM’s standard driving profile is **not a truck restriction engine**. Height/width/weight road restrictions, axle limits, closures, live traffic and driver rest breaks are outside this brief’s risk model and are explicitly disclosed. Load affects the supplied weather rules only. The app does not claim legal or operational truck clearance.
 
-OSRM alternative routes are best effort. When fewer than three are returned, the app requests road routes via two perpendicular-offset waypoints, rejects near-identical distance/time candidates, and limits detours to 1.8× the original distance. These are labelled “via detour”. The approximation may reject distinct but extremely similar alternatives; it cannot guarantee three road options on every network. Any shortfall is visible.
+OSRM alternative routes are best effort. Native alternatives and generated waypoint detours both pass an approximate geometry-overlap filter: candidates sharing over 95% of the smaller corridor cell set with less than 5% distance difference are rejected. Alternative routes that retrace over 5% of their road distance are rejected; the primary route is preserved when the network itself requires retracing. These are heuristics, not a proof that corridors are disjoint.
+
+When fewer than three remain, the app tries at most eight perpendicular-offset waypoints, starting near one-third and two-thirds of the trip before wider midpoint detours. Two candidates run concurrently; discovery stops at three accepted options. Detours are limited to 1.8× the primary route distance and labelled “via detour”. A road network may still have fewer distinct viable options; any shortfall is visible. No disconnected or fabricated road option is substituted.
+
 
 ## Forecast semantics and units
 
-Open-Meteo requests UTC epoch timestamps, wind in mph, temperature in °F and precipitation in mm. Liquid rain is `rain + showers`, divided by 25.4 to get inches/hour. Native `snowfall` is centimetres of snow (not liquid equivalent), divided by 2.54. The data describe preceding-hour accumulation, so ETA selects the bucket ending at or immediately after ETA. At an exact hourly boundary, that exact bucket is selected. Hourly wind is used consistently with that bucket.
+Open-Meteo requests UTC epoch timestamps, wind in mph, temperature in °F and precipitation in mm. Liquid rain is `rain + showers`, divided by 25.4 to get inches/hour. Native `snowfall` is centimetres of snow (not liquid equivalent), divided by 2.54. Rain and snow are preceding-hour accumulations: ETA selects the bucket ending at or immediately after ETA. An exact hourly timestamp uses that exact bucket.
 
-No interpolation smooths away a severe hourly forecast. Null, non-finite, negative, missing or out-of-range weather fails planning rather than assuming low risk. The eight-day forecast request provides room for departures up to five days ahead, the 48-hour slider, and normal road travel. Actual arrival forecast coverage is still verified at every checkpoint. The app never silently clamps an ETA to the last available hour.
+Wind is instantaneous, not an hourly accumulation. Between timestamps, the app conservatively takes the **maximum of the two bracketing hourly wind values**; at an exact timestamp it uses that exact wind value. Thus a 55 mph value at 00:00 cannot disappear at 00:01 merely because the 01:00 value is calm. This is a documented conservative envelope, not an assertion that wind is constant during the hour. Popup metadata shows both bracketing timestamps. Temperature, which is not used for risk, is linearly interpolated between them.
+
+Forecast requests use absolute `start_hour` and `end_hour` values. Start is departure rounded down; end is the later of the last route arrival or departure +48 hours, rounded **up** to an hour. Absolute timestamps are part of the cache key, so a cached response cannot silently shift its requested date range across UTC midnight. The provider's 16-day horizon is checked before fetching; actual coverage is checked again at every checkpoint/frame. Null, non-finite, negative, missing or out-of-range weather fails planning rather than becoming zero risk. The app never clamps an ETA to the last available hour.
+
 
 ## Corridor heatmap
 
@@ -46,7 +52,7 @@ Three nested translucent discs per weather point create a blended heatmap in a L
 
 ## Resilience and resource limits
 
-Provider calls have connect and overall timeouts. Weather is requested in batches of 24 coordinates with at most three concurrent requests. Overlapping checkpoint/corridor requests are deduplicated. Forecast cache TTL is 15 minutes, routes one hour, geocoding 24 hours. The cache is bounded to 1,500 entries and process-local. Trips requiring more than 270 route checkpoints are rejected with a message to widen spacing or shorten the trip.
+Planning shares one 75-second monotonic deadline across route discovery, forecast batches and result preparation. Each async HTTP transfer additionally has a total 18-second deadline including response-body transfer, plus connect/read inactivity limits. This prevents a slow trickling response from running indefinitely. Concurrent results wait only for the remaining planning budget; queued tasks are cancelled and executor shutdown does not delay an expired response. Running downloads cancel at their shared deadline. Expiry returns actionable HTTP 504 `PLAN_TIMEOUT`, before the Vercel 120-second cap. OSRM `NoRoute`/`NoSegment` JSON is preserved even when returned with HTTP 400, and maps to HTTP 422 `NO_ROUTE`. Weather is requested in batches of 24 coordinates with at most three concurrent requests. Overlapping checkpoint/corridor requests are deduplicated. Forecast cache TTL is 15 minutes, routes one hour, geocoding 24 hours. The cache is bounded to 1,500 entries and process-local. Trips requiring more than 270 route checkpoints are rejected with a message to widen spacing or shorten the trip.
 
 The route endpoint accepts at most 16 KB and up to 12 requests per minute per connection identity per process. This is a demonstration guard; serverless instances do not share counters. An internet-scale deployment should use edge controls/shared storage and commercial provider capacity.
 

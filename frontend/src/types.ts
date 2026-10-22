@@ -10,6 +10,8 @@ export interface Weather {
   snow_in_hr: number;
   temperature_f: number;
   forecast_time: string;
+  wind_window_start: string;
+  wind_window_end: string;
 }
 export interface Checkpoint {
   coordinate: Coordinate;

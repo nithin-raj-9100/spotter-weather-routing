@@ -122,7 +122,14 @@ function PointPopup({ cp }: { cp: Checkpoint }) {
         <Snowflake size={13} /> {number(cp.weather.snow_in_hr, 2)} in/hr
       </p>
       <p>{cp.risk.reasons.join(" ")}</p>
-      <small>Forecast bucket: {dateTime(cp.weather.forecast_time)}</small>
+      <small className="wind-window">
+        Wind: higher hourly value between{" "}
+        {dateTime(cp.weather.wind_window_start)} and{" "}
+        {dateTime(cp.weather.wind_window_end)}.
+      </small>
+      <small>
+        Precipitation hour ending: {dateTime(cp.weather.forecast_time)}
+      </small>
     </div>
   );
 }
@@ -141,6 +148,7 @@ export default function RouteMap({
   heatmap,
   layer,
   onHeatmap,
+  focusedCheckpoint,
 }: {
   plan: Plan | null;
   selected: string | null;
@@ -149,6 +157,7 @@ export default function RouteMap({
   heatmap: boolean;
   layer: string;
   onHeatmap: () => void;
+  focusedCheckpoint: Checkpoint | null;
 }) {
   const [revision, setRevision] = useState(0);
   const [tileError, setTileError] = useState(false);
@@ -171,6 +180,7 @@ export default function RouteMap({
           }}
         />
         <Fit routes={routes} revision={revision} />
+        <FocusCheckpoint point={focusedCheckpoint} />
         {plan && heatmap && (
           <WeatherLayer plan={plan} hour={hour} layer={layer} />
         )}
@@ -315,5 +325,22 @@ function MapZoom() {
         −
       </button>
     </div>
+  );
+}
+
+function FocusCheckpoint({ point }: { point: Checkpoint | null }) {
+  const map = useMap();
+  useEffect(() => {
+    if (point)
+      map.setView(
+        [point.coordinate[1], point.coordinate[0]],
+        Math.max(map.getZoom(), 9),
+      );
+  }, [map, point]);
+  if (!point) return null;
+  return (
+    <Popup position={[point.coordinate[1], point.coordinate[0]]}>
+      <PointPopup cp={point} />
+    </Popup>
   );
 }

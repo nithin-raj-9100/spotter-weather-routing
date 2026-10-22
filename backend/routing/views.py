@@ -2,6 +2,7 @@ import hashlib
 import json
 import logging
 import math
+import os
 import time
 from datetime import UTC, datetime, timedelta
 from functools import wraps
@@ -55,7 +56,14 @@ def api_errors(view):
 
 @require_GET
 def health(request):
-    return JsonResponse({"status": "ok", "version": "1.0.0", "time": datetime.now(UTC).isoformat()})
+    return JsonResponse(
+        {
+            "status": "ok",
+            "version": "1.0.0",
+            "revision": os.getenv("APP_REVISION") or os.getenv("VERCEL_GIT_COMMIT_SHA", "local"),
+            "time": datetime.now(UTC).isoformat(),
+        }
+    )
 
 
 @require_GET

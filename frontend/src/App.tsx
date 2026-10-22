@@ -23,7 +23,7 @@ import {
   ShieldCheck,
 } from "lucide-react";
 import PlaceInput from "./PlaceInput";
-import type { Place, Plan, Route } from "./types";
+import type { Checkpoint, Place, Plan, Route } from "./types";
 import {
   api,
   dateTime,
@@ -33,6 +33,7 @@ import {
   RISK_LABELS,
   RISK_COLORS,
   ROUTE_COLORS,
+  recommendationText,
 } from "./lib";
 const RouteMap = lazy(() => import("./RouteMap"));
 const chicago: Place = {
@@ -73,6 +74,7 @@ function RouteCard({
       onClick={onSelect}
       aria-pressed={selected}
       aria-label={`Select ${route.name}`}
+      aria-describedby={`${route.id}-description`}
     >
       <div className="route-top">
         <span className="route-name">
@@ -102,7 +104,15 @@ function RouteCard({
         Avg risk {number(route.summary.average_risk, 2)} / 4 · Arrives{" "}
         {dateTime(route.arrival)}
       </p>
-      <div className="risk-bar" aria-label="Distance by risk">
+      <span id={`${route.id}-description`} className="sr-only">
+        {duration(route.duration_seconds)}; {number(route.distance_miles)}{" "}
+        miles; maximum {RISK_LABELS[route.summary.max_risk]} risk.{" "}
+        {RISK_LABELS.map(
+          (label) => `${label}: ${number(miles[label], 1)} miles`,
+        ).join("; ")}
+        .
+      </span>
+      <div className="risk-bar" aria-hidden="true">
         {RISK_LABELS.map((label, i) => (
           <span
             key={label}
@@ -114,6 +124,13 @@ function RouteCard({
           />
         ))}
       </div>
+      <p className="risk-breakdown">
+        {RISK_LABELS.filter((label) => miles[label] > 0.001).map((label) => (
+          <span key={label}>
+            {label}: {number(miles[label], 1)} mi
+          </span>
+        ))}
+      </p>
       <div className="route-bottom">
         <span>
           {number(miles["Severe"], 1)} severe mi · {number(miles["High"], 1)}{" "}
@@ -229,16 +246,12 @@ export default function App() {
   const [playing, setPlaying] = useState(false);
   const [rules, setRules] = useState(false);
   const [details, setDetails] = useState(true);
-  const [phase, setPhase] = useState(0);
+  const [focusedCheckpoint, setFocusedCheckpoint] = useState<Checkpoint | null>(
+    null,
+  );
   const request = useRef<AbortController | null>(null);
   const resultRef = useRef<HTMLElement>(null);
   useEffect(() => () => request.current?.abort(), []);
-  useEffect(() => {
-    if (!busy) return;
-    setPhase(0);
-    const t = setInterval(() => setPhase((p) => Math.min(3, p + 1)), 4500);
-    return () => clearInterval(t);
-  }, [busy]);
   useEffect(() => {
     if (!playing) return;
     const t = setInterval(() => setHour((h) => (h + 1) % 49), 650);
@@ -294,7 +307,9 @@ export default function App() {
         }),
         signal: controller.signal,
       });
+      if (request.current !== controller || controller.signal.aborted) return;
       setPlan(data);
+      setFocusedCheckpoint(null);
       setSelected(data.recommended_id || data.routes[0]?.id || null);
       setHour(0);
       if (mode === "demo") {
@@ -310,9 +325,14 @@ export default function App() {
         80,
       );
     } catch (e) {
-      if (e instanceof Error && e.name !== "AbortError") setError(e.message);
+      if (
+        request.current === controller &&
+        e instanceof Error &&
+        e.name !== "AbortError"
+      )
+        setError(e.message);
     } finally {
-      setBusy(false);
+      if (request.current === controller) setBusy(false);
     }
   }
   function exportPlan() {
@@ -354,7 +374,9 @@ export default function App() {
           <div>
             <div className="eyebrow">A LITTLE FORESIGHT. A SAFER JOURNEY.</div>
             <h1>Know what’s down the road.</h1>
-            <p>Three routes. Real weather. A better-informed way forward.</p>
+            <p>
+              Compare real routes. Understand the weather. Choose with clarity.
+            </p>
           </div>
           <span className="intro-icon">
             <RouteIcon size={40} strokeWidth={1} />
@@ -446,6 +468,12 @@ export default function App() {
               <p className="field-note">
                 Forecasts follow your ETA, not just your departure.
               </p>
+              {inputsChanged && (
+                <p className="stale-inputs planner-stale" role="status">
+                  <Info size={14} />
+                  Inputs changed. Replan to update the map and results.
+                </p>
+              )}
               <button
                 className="primary plan-button"
                 disabled={busy}
@@ -470,7 +498,7 @@ export default function App() {
                 onClick={() => void submit("demo")}
               >
                 <Play size={13} />
-                Explore a sample trip<span>DEMO</span>
+                Explore Chicago–Detroit demo<span>DEMO</span>
               </button>
             </form>
             {error && (
@@ -489,6 +517,12 @@ export default function App() {
             </div>
           </aside>
           <section className="map-panel">
+            {inputsChanged && (
+              <p className="stale-inputs map-stale" role="status">
+                <Info size={14} />
+                Map shows the previous trip. Replan to apply your changes.
+              </p>
+            )}
             <Suspense
               fallback={
                 <div className="map-loading">
@@ -500,7 +534,11 @@ export default function App() {
               <RouteMap
                 plan={plan}
                 selected={selected}
-                onSelect={setSelected}
+                onSelect={(id) => {
+                  setSelected(id);
+                  setFocusedCheckpoint(null);
+                }}
+                focusedCheckpoint={focusedCheckpoint}
                 hour={hour}
                 heatmap={heatmap}
                 layer={layer}
@@ -572,7 +610,7 @@ export default function App() {
               </div>
               {plan && (
                 <p className="forecast-time">
-                  Corridor forecast ·{" "}
+                  Sampled corridor forecast ·{" "}
                   {dateTime(plan.corridor.frames[hour].time)} · Route checkpoint
                   risks remain tied to their ETAs.
                 </p>
@@ -584,12 +622,7 @@ export default function App() {
           <div className="progress-status" role="status" aria-live="polite">
             <LoaderCircle size={17} className="spin" />
             {
-              [
-                "Finding distinct road routes…",
-                "Sampling checkpoints and arrival times…",
-                "Fetching weather across your trip corridor…",
-                "Evaluating risk and preparing your map…",
-              ][phase]
+              "Calculating routes and weather. Live requests can take up to 75 seconds."
             }
             <button
               onClick={() => {
@@ -644,7 +677,10 @@ export default function App() {
                   route={r}
                   plan={plan}
                   selected={r.id === selected}
-                  onSelect={() => setSelected(r.id)}
+                  onSelect={() => {
+                    setSelected(r.id);
+                    setFocusedCheckpoint(null);
+                  }}
                 />
               ))}
             </div>
@@ -664,11 +700,7 @@ export default function App() {
                     ? `${plan.routes.find((r) => r.id === plan.recommended_id)?.name} is the best weather-aware option`
                     : "No route recommended — delay or change this trip"}
                 </strong>
-                <p>
-                  {plan.recommended_id
-                    ? "Ranked by fewest severe miles, then high miles, average risk and travel time."
-                    : "Every route contains No Travel conditions for this load."}
-                </p>
+                <p>{recommendationText(plan)}</p>
               </div>
               <button className="text-button" onClick={() => setRules(true)}>
                 See the rules
@@ -703,7 +735,7 @@ export default function App() {
                       <thead>
                         <tr>
                           <th>Checkpoint</th>
-                          <th>ETA · local time</th>
+                          <th>ETA · {timezone}</th>
                           <th>
                             <Wind size={12} /> Wind
                           </th>
@@ -727,11 +759,26 @@ export default function App() {
                                   background: RISK_COLORS[cp.risk.level],
                                 }}
                               />
-                              {i === 0
-                                ? "Start"
-                                : i === current.checkpoints.length - 1
-                                  ? "Destination"
-                                  : `Mile ${number(cp.mile, 1)}`}
+                              <button
+                                className="checkpoint-jump"
+                                aria-label={`View checkpoint ${i + 1} on map`}
+                                onClick={() => {
+                                  setFocusedCheckpoint(cp);
+                                  document
+                                    .querySelector(".map-panel")
+                                    ?.scrollIntoView({
+                                      behavior: "smooth",
+                                      block: "start",
+                                    });
+                                }}
+                              >
+                                {i === 0
+                                  ? "Start"
+                                  : i === current.checkpoints.length - 1
+                                    ? "Destination"
+                                    : `Mile ${number(cp.mile, 1)}`}
+                                <ArrowUpRight size={12} />
+                              </button>
                             </td>
                             <td>{dateTime(cp.eta)}</td>
                             <td>

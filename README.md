@@ -27,18 +27,18 @@ npm run dev
 
 Open **http://127.0.0.1:5173**. Vite proxies `/api` to Django. Choose cities from the autocomplete, departure time, load in pounds, and 10/25/50-mile checkpoint spacing. The browser’s time zone is shown beside departure; requests and provider timestamps use UTC.
 
-**Find the best route** requests real road routes and real forecasts. **Explore a sample trip** uses recorded Chicago–Detroit road routes and explicitly synthetic weather, with a moving storm and meaningful route trade-offs. Demo mode never silently replaces live data or makes provider requests. Map tiles and fonts still need internet; controls, route geometry and checkpoint tables work without tiles.
+**Find the best route** requests real road routes and real forecasts. **Explore Chicago–Detroit demo** uses recorded Chicago–Detroit road routes and explicitly synthetic weather, with a moving storm and meaningful route trade-offs. Demo mode never silently replaces live data or makes provider requests. Map tiles and fonts still need internet; controls, route geometry and checkpoint tables work without tiles.
 
 ## What is implemented
 
-- Three distinct OSRM road route options, including real waypoint detours when native alternatives return fewer than three. If the road network still yields fewer distinct viable alternatives, the UI explains that; duplicates and imaginary roads are never returned.
+- Three distinct OSRM road route options, including real waypoint detours when native alternatives return fewer than three. If the road network still yields fewer distinct viable alternatives, the UI explains that; geographically near-identical routes and substantial road retracing are filtered, and no imaginary roads are returned.
 - Checkpoints at 10, 25 or 50 miles along the actual route, including origin and destination. Interpolated OSRM **segment travel times**, rather than constant average speed, determine arrival times.
-- Open-Meteo hourly wind, rain, showers and snow forecasts. Rain includes showers; native millimetres are converted to liquid inches, and native snow centimetres to snowfall inches. Forecasts use the hourly bucket ending at or after arrival.
+- Open-Meteo hourly wind, rain, showers and snow forecasts. Rain includes showers; native millimetres are converted to liquid inches, and native snow centimetres to snowfall inches. Wind uses the higher bracketing hourly value between timestamps (the exact value at an exact timestamp); rain/snow use the preceding-hour bucket ending at or after arrival.
 - All wind/rain/snow risk thresholds and load overrides; worst component wins. No Travel routes are excluded from recommendations. If all routes are blocked, none is recommended.
 - Lexicographic ranking: fewest Severe miles → fewest High miles → lowest distance-weighted average risk → shortest time.
 - Selectable map routes, risk-coloured checkpoints and popups, endpoint markers, route cards, distance-risk bars, average risk scores, ETAs and detailed checkpoint tables.
 - Off-road corridor weather samples, canvas-rendered blended heatmap, risk/wind/rain/snow layers, toggle, playback, and a 0–48-hour slider. All 49 frames are returned once, so moving the slider makes no network requests. Heatmap time is independent of ETA-specific checkpoint risk.
-- Keyboard-accessible city autocomplete and dialog, responsive mobile layout, loading/cancel/retry/error states, changed-input notice, trip JSON export, provider request timeouts, bounded batching and cache, and a best-effort request-rate guard.
+- Keyboard-accessible city autocomplete and dialog, responsive mobile layout, loading/cancel/retry/error states, changed-input notices by the controls and map, explicit viewer timezones, keyboard checkpoint navigation, visible risk mileage breakdowns, trip JSON export, provider request timeouts, bounded batching and cache, and a best-effort request-rate guard.
 - Build/lint verification and direct API/browser checks. GitHub Actions checks code style and the production build.
 
 ## Verify
@@ -89,7 +89,7 @@ React form → POST /api/plan → input validation
 
 | Method | Endpoint | Purpose |
 | --- | --- | --- |
-| GET | `/api/health` | Application status and UTC clock |
+| GET | `/api/health` | Application status, deployment revision and UTC clock |
 | GET | `/api/places?q=Chicago` | City autocomplete (2–100 characters) |
 | POST | `/api/plan` | Live or demo planning |
 
@@ -106,7 +106,7 @@ Request example (replace departure with an upcoming timezone-aware timestamp):
 }
 ```
 
-For demo mode, origin and destination are fixed to Chicago and Detroit and can be omitted. Departures must be within five days (five-minute past tolerance for request transit). Load: 0–100,000 lb. Locations: latitude ±85°, longitude ±180°. Errors use `{"error":{"code":"...","message":"..."}}` with 400 validation, 422 unavailable route/forecast range, 429 rate limit, or 503 provider failure. Missing forecast data never becomes zero-risk weather.
+For demo mode, origin and destination are fixed to Chicago and Detroit and can be omitted. Departures must be within five days (five-minute past tolerance for request transit). Load: 0–100,000 lb. Locations: latitude ±85°, longitude ±180°. Errors use `{"error":{"code":"...","message":"..."}}` with 400 validation, 422 unavailable route/forecast range, 429 rate limit, 503 provider failure, or 504 planning deadline. Missing forecast data never becomes zero-risk weather.
 
 ## Deployment on Vercel
 
@@ -118,7 +118,7 @@ vercel deploy --yes
 vercel deploy --prod
 ```
 
-There is no database, filesystem write dependency or session state. No migrations are needed. Caches and rate counters are in-memory per function instance and may be cold on each invocation. The 120-second function cap covers bounded routing fallbacks and batched forecast requests; normal sample-trip live requests are much faster. Free public providers have rate limits and no SLA. For sustained production use, run a provisioned OSRM instance and use an appropriate Open-Meteo plan plus shared cache/rate limiting.
+There is no database, filesystem write dependency or session state. No migrations are needed. Caches and rate counters are in-memory per function instance and may be cold on each invocation. A shared 75-second monotonic planning deadline bounds routing, weather and result preparation, below the 120-second function cap. Async download deadlines bound the entire response transfer; queued work is cancelled when the planning deadline expires. Normal sample-trip live requests are much faster. Free public providers have rate limits and no SLA. For sustained production use, run a provisioned OSRM instance and use an appropriate Open-Meteo plan plus shared cache/rate limiting.
 
 Optional environment variables:
 
@@ -126,6 +126,7 @@ Optional environment variables:
 | --- | --- |
 | `DJANGO_ALLOWED_HOSTS` | `localhost,127.0.0.1,.vercel.app`; comma-separated, override for a custom domain |
 | `DJANGO_SECRET_KEY` | Ephemeral process key by default; set a stable private key before adding signed data/authentication |
+| `APP_REVISION` | Optional commit SHA for CLI deployments; health otherwise uses Vercel Git metadata or `local` |
 | `DJANGO_DEBUG` | `0`; opt in locally with `1` |
 | `OSRM_BASE_URL` | `https://router.project-osrm.org`; use your own compatible routing host |
 

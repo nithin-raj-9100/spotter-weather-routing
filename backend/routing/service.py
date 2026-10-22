@@ -36,6 +36,7 @@ def synthetic_weather(points, departure):
 
 
 def build_plan(payload, departure):
+    deadline = providers.Deadline()
     demo = payload.get("mode") == "demo"
     load = payload["load_lb"]
     spacing = payload["spacing_miles"]
@@ -53,7 +54,7 @@ def build_plan(payload, departure):
         }
     else:
         origin, destination = payload["origin"], payload["destination"]
-        raw = providers.get_routes(origin, destination)
+        raw = providers.get_routes(origin, destination, deadline)
     checkpoints = [sample_route(r, spacing) for r in raw]
     if sum(map(len, checkpoints)) > 270:
         raise providers.ProviderError(
@@ -74,8 +75,11 @@ def build_plan(payload, departure):
 
     checkpoint_indices = [[point_index(cp["coordinate"]) for cp in route] for route in checkpoints]
     corridor_indices = [point_index(p) for p in corridor]
+    latest = departure + timedelta(seconds=max(48 * 3600, max(r["duration"] for r in raw)))
     weather = (
-        synthetic_weather(unique, departure) if demo else providers.get_weather(unique, departure)
+        synthetic_weather(unique, departure)
+        if demo
+        else providers.get_weather(unique, departure, latest, deadline)
     )
     routes = []
     for r_index, (raw_route, samples) in enumerate(zip(raw, checkpoints, strict=True)):
@@ -102,6 +106,7 @@ def build_plan(payload, departure):
     # All 49 frames are computed once. Slider changes never trigger provider requests.
     frames = []
     for hour in range(49):
+        deadline.remaining()
         when = departure + timedelta(hours=hour)
         frame = []
         for w_index in corridor_indices:
@@ -132,6 +137,7 @@ def build_plan(payload, departure):
         warnings.append(
             "All routes contain No Travel conditions. No route is recommended; delay departure or change your trip."
         )
+    deadline.remaining()
     return {
         "mode": "demo" if demo else "live",
         "origin": origin,
@@ -146,6 +152,6 @@ def build_plan(payload, departure):
         "sources": {
             "routing": "OSRM / OpenStreetMap",
             "weather": "Synthetic demo scenario" if demo else "Open-Meteo",
-            "weather_sampling": "Hourly bucket ending at or after ETA; rain + showers converted mm → in; snow cm → in.",
+            "weather_sampling": "Wind: maximum of bracketing hourly values (exact timestamp uses exact value). Precipitation: hour ending at/after ETA; rain + showers mm → in; snow cm → in.",
         },
     }

@@ -103,10 +103,10 @@ button svg {
 }
 .brand small {
   font:
-    600 9px "DM Sans",
+    600 10px "DM Sans",
     sans-serif;
   letter-spacing: 1.4px;
-  color: #8b938b;
+  color: #526348;
 }
 .header-right {
   display: flex;
@@ -118,7 +118,7 @@ button svg {
   display: flex;
   gap: 7px;
   align-items: center;
-  color: #77867a;
+  color: #526348;
 }
 .live-dot {
   width: 6px;
@@ -152,10 +152,10 @@ main {
   margin-bottom: 30px;
 }
 .eyebrow {
-  font-size: 9px;
+  font-size: 12px;
   font-weight: 650;
   letter-spacing: 1.8px;
-  color: #7a8a76;
+  color: #526348;
   margin-bottom: 12px;
 }
 h1 {
@@ -166,7 +166,7 @@ h1 {
   color: #213b31;
 }
 .page-intro p {
-  color: #818a80;
+  color: #526348;
   font-size: 12px;
   margin-top: 10px;
 }
@@ -207,9 +207,9 @@ h1 {
 }
 .section-number {
   font:
-    500 9px "DM Sans",
+    500 10px "DM Sans",
     sans-serif;
-  color: #7b8e77;
+  color: #526348;
   border: 1px solid #dfe5d9;
   border-radius: 5px;
   padding: 4px 5px;
@@ -220,7 +220,7 @@ h1 {
 }
 .planner label {
   display: block;
-  font-size: 10px;
+  font-size: 12px;
   font-weight: 650;
   margin-bottom: 8px;
 }
@@ -258,7 +258,7 @@ h1 {
   outline: none;
 }
 .input-icon input::placeholder {
-  color: #a3ada1;
+  color: #526348;
 }
 .place-field {
   position: relative;
@@ -290,8 +290,8 @@ h1 {
   background: #edf3e7;
 }
 .field-note {
-  font-size: 9px;
-  color: #8d9689;
+  font-size: 12px;
+  color: #526348;
   line-height: 1.5;
   display: block;
   margin-top: 7px;
@@ -300,8 +300,8 @@ h1 {
   margin-top: 19px;
 }
 .unit {
-  font-size: 10px;
-  color: #86917e;
+  font-size: 12px;
+  color: #526348;
 }
 .spacing-label {
   display: flex;
@@ -310,8 +310,8 @@ h1 {
   margin-top: 22px;
 }
 .spacing-label > span {
-  font-size: 9px;
-  color: #9aa491;
+  font-size: 12px;
+  color: #526348;
 }
 .segmented {
   display: flex;
@@ -324,8 +324,8 @@ h1 {
 .segmented button {
   flex: 1;
   padding: 7px 0;
-  font-size: 10px;
-  color: #88927f;
+  font-size: 12px;
+  color: #526348;
   border-radius: 4px;
   border: 1px solid transparent;
 }
@@ -362,13 +362,13 @@ h1 {
   align-items: center;
   justify-content: center;
   gap: 7px;
-  font-size: 10px;
-  color: #7d8a75;
+  font-size: 12px;
+  color: #526348;
   padding: 16px 0 20px;
   width: 100%;
 }
 .demo-button span {
-  font-size: 7px;
+  font-size: 10px;
   background: #f1f3ec;
   border: 1px solid #e3e8dc;
   padding: 2px 4px;
@@ -391,9 +391,9 @@ h1 {
   flex-shrink: 0;
 }
 .planner-footer p {
-  font-size: 9px;
+  font-size: 12px;
   line-height: 1.8;
-  color: #909885;
+  color: #526348;
 }
 .planner-footer strong {
   font-weight: 500;
@@ -433,7 +433,7 @@ h1 {
   box-shadow: 0 1px 8px #223b3310;
   border-radius: 5px;
   padding: 9px 11px;
-  font-size: 8px;
+  font-size: 11px;
   font-weight: 600;
   letter-spacing: 1px;
   display: flex;
@@ -508,7 +508,7 @@ h1 {
 .empty-map p {
   font-size: 11px;
   line-height: 1.8;
-  color: #73816d;
+  color: #526348;
 }
 .empty-icon {
   border-radius: 50%;
@@ -534,8 +534,8 @@ h1 {
   box-shadow: 0 1px 3px #23433408;
   border-radius: 5px;
   padding: 9px 11px;
-  font-size: 8px;
-  color: #7e8775;
+  font-size: 11px;
+  color: #4c5e42;
 }
 .map-legend span {
   display: flex;
@@ -574,13 +574,13 @@ h1 {
   display: flex;
 }
 .forecast-top strong {
-  font-size: 10px;
+  font-size: 12px;
   font-weight: 550;
 }
 .forecast-chip {
-  font-size: 7px;
+  font-size: 10px;
   letter-spacing: 0.6px;
-  color: #8c987e;
+  color: #526348;
   border: 1px solid #e4e9dc;
   background: #f8faf4;
   border-radius: 3px;
@@ -590,9 +590,9 @@ h1 {
   background: white;
   border: 1px solid #e3e8dd;
   border-radius: 5px;
-  color: #7c8a71;
+  color: #526348;
   padding: 5px 7px;
-  font-size: 9px;
+  font-size: 12px;
 }
 .slider-row {
   display: flex;
@@ -625,8 +625,8 @@ h1 {
   display: flex;
   justify-content: space-between;
   margin-top: 8px;
-  font-size: 7px;
-  color: #96a08c;
+  font-size: 10px;
+  color: #526348;
 }
 .hour-output {
   font:
@@ -641,14 +641,14 @@ h1 {
 }
 .hour-output small {
   font:
-    500 7px "DM Sans",
+    500 10px "DM Sans",
     sans-serif;
   letter-spacing: 0.5px;
-  color: #91a080;
+  color: #526348;
 }
 .forecast-time {
-  font-size: 8px;
-  color: #829075;
+  font-size: 11px;
+  color: #526348;
   margin: 10px 0 0 42px;
 }
 .feature-row {
@@ -666,17 +666,17 @@ h1 {
 }
 .feature-row > div > span {
   color: #a5b099;
-  font-size: 10px;
+  font-size: 12px;
   padding-top: 1px;
 }
 .feature-row strong {
-  font-size: 10px;
+  font-size: 12px;
   font-weight: 600;
   color: #617354;
 }
 .feature-row p {
-  font-size: 9px;
-  color: #929c87;
+  font-size: 12px;
+  color: #526348;
   margin-top: 5px;
 }
 .page-footer {
@@ -684,8 +684,8 @@ h1 {
   justify-content: space-between;
   gap: 16px;
   margin-top: 24px;
-  font-size: 8px;
-  color: #98a08f;
+  font-size: 11px;
+  color: #526348;
   line-height: 1.7;
 }
 .page-footer > span:last-child {
@@ -696,8 +696,8 @@ h1 {
   justify-content: flex-end;
 }
 .page-footer button {
-  font-size: 8px;
-  color: #718269;
+  font-size: 11px;
+  color: #526348;
   margin-left: 15px;
   text-decoration: underline;
   text-underline-offset: 3px;
@@ -734,7 +734,7 @@ h1 {
   background: #eef4e6;
 }
 .suggestions p {
-  font-size: 10px;
+  font-size: 12px;
   padding: 12px;
   color: #91654e;
 }
@@ -767,7 +767,7 @@ h1 {
   gap: 10px;
   align-items: center;
   justify-content: center;
-  color: #7b8e6c;
+  color: #526348;
 }
 .progress-status {
   margin-top: 20px;
@@ -794,18 +794,18 @@ h1 {
   align-items: center;
 }
 .mode-tag {
-  font-size: 7px;
+  font-size: 10px;
   border-radius: 4px;
   padding: 4px 6px;
   letter-spacing: 0.6px;
 }
 .mode-tag.demo {
-  color: #956629;
+  color: #79501b;
   background: #f5ecda;
   border: 1px solid #e9d8b4;
 }
 .mode-tag.live {
-  color: #42825a;
+  color: #32613c;
   background: #e8f2e8;
   border: 1px solid #cee2cc;
 }
@@ -819,8 +819,8 @@ h1 {
 }
 .results-description > span {
   margin-left: auto;
-  font-size: 9px;
-  color: #8a947e;
+  font-size: 12px;
+  color: #526348;
 }
 .route-grid {
   display: grid;
@@ -863,29 +863,29 @@ h1 {
 }
 .route-name small {
   font-weight: 400;
-  color: #8f997f;
-  font-size: 8px;
+  color: #526348;
+  font-size: 11px;
 }
 .recommend-tag {
   display: flex;
   align-items: center;
   gap: 3px;
   color: #44774c;
-  font-size: 8px;
+  font-size: 11px;
   background: #e8f1dd;
   border-radius: 4px;
   padding: 4px 6px;
 }
 .blocked-tag {
-  font-size: 8px;
+  font-size: 11px;
   color: #993f60;
   background: #f7e8ed;
   padding: 4px 6px;
   border-radius: 4px;
 }
 .route-rank {
-  font-size: 8px;
-  color: #919983;
+  font-size: 11px;
+  color: #526348;
 }
 .route-metrics {
   margin-top: 20px;
@@ -901,12 +901,12 @@ h1 {
   white-space: nowrap;
 }
 .route-metrics > span:not(.risk-badge) {
-  font-size: 10px;
-  color: #8a937e;
+  font-size: 12px;
+  color: #526348;
   white-space: nowrap;
 }
 .risk-badge {
-  font-size: 8px;
+  font-size: 11px;
   border-radius: 4px;
   padding: 4px 6px;
   display: inline-flex;
@@ -922,23 +922,23 @@ h1 {
 }
 .risk-0 {
   background: #e6f1e7;
-  color: #4d8056;
+  color: #32613c;
 }
 .risk-1 {
   background: #f5efd8;
-  color: #a0832c;
+  color: #74601c;
 }
 .risk-2 {
   background: #fff0dd;
-  color: #bf7e37;
+  color: #8b511d;
 }
 .risk-3 {
   background: #fce9df;
-  color: #c05b4a;
+  color: #963a2c;
 }
 .risk-4 {
   background: #f4e4eb;
-  color: #9b4565;
+  color: #7f3150;
 }
 .route-metrics .risk-badge {
   margin-left: auto;
@@ -961,8 +961,8 @@ h1 {
   justify-content: space-between;
   align-items: center;
   margin-top: 10px;
-  font-size: 8px;
-  color: #8a947c;
+  font-size: 11px;
+  color: #4c5a43;
 }
 .route-bottom > span:last-child {
   color: #6c8d64;
@@ -987,14 +987,14 @@ h1 {
   color: #456738;
 }
 .recommendation p {
-  font-size: 9px;
-  color: #80936e;
+  font-size: 12px;
+  color: #4b643d;
   margin-top: 4px;
 }
 .recommendation .text-button {
   margin-left: auto;
-  font-size: 9px;
-  color: #6d875d;
+  font-size: 12px;
+  color: #425b35;
 }
 .recommendation.unsafe {
   background: #fff0ed;
@@ -1002,7 +1002,7 @@ h1 {
 }
 .recommendation.unsafe strong,
 .recommendation.unsafe > span {
-  color: #a75d51;
+  color: #963a2c;
 }
 .checkpoint-panel {
   margin-top: 22px;
@@ -1030,9 +1030,9 @@ h1 {
   color: #899879;
 }
 .checkpoint-heading small {
-  font-size: 9px;
+  font-size: 12px;
   font-weight: 400;
-  color: #94a085;
+  color: #526348;
   margin-left: 8px;
 }
 .table-scroll {
@@ -1042,14 +1042,14 @@ table {
   width: 100%;
   border-collapse: collapse;
   text-align: left;
-  font-size: 10px;
+  font-size: 12px;
   white-space: nowrap;
 }
 th {
   font-weight: 500;
-  color: #88977b;
+  color: #526148;
   background: #f8faf4;
-  font-size: 9px;
+  font-size: 12px;
 }
 th,
 td {
@@ -1070,11 +1070,11 @@ th svg {
   z-index: 2;
 }
 .checkpoint-scroll td {
-  color: #68775c;
+  color: #46563c;
 }
 .checkpoint-scroll td small {
-  color: #9ca68f;
-  font-size: 8px;
+  color: #59684e;
+  font-size: 11px;
 }
 .checkpoint-dot {
   display: inline-block;
@@ -1086,7 +1086,7 @@ th svg {
 .reason-cell {
   white-space: normal;
   min-width: 165px;
-  font-size: 9px;
+  font-size: 12px;
   line-height: 1.5;
   max-width: 280px;
 }
@@ -1097,8 +1097,8 @@ th svg {
   display: flex;
   align-items: flex-start;
   gap: 7px;
-  color: #939d87;
-  font-size: 9px;
+  color: #526348;
+  font-size: 12px;
   line-height: 1.7;
   margin-bottom: 6px;
 }
@@ -1125,15 +1125,15 @@ th svg {
 }
 .point-popup p {
   margin: 8px 0;
-  font-size: 10px;
+  font-size: 12px;
 }
 .point-popup p svg {
   vertical-align: middle;
   margin-right: 3px;
 }
 .point-popup small {
-  font-size: 8px;
-  color: #87947e;
+  font-size: 11px;
+  color: #526348;
 }
 .leaflet-control-attribution {
   font-size: 7px !important;
@@ -1149,8 +1149,8 @@ th svg {
   padding: 8px;
   border-radius: 5px;
   background: #fff4de;
-  color: #92743c;
-  font-size: 10px;
+  color: #70531e;
+  font-size: 12px;
 }
 .rules-dialog {
   border: 1px solid #dfe6d5;
@@ -1185,7 +1185,7 @@ th svg {
 .rules-dialog li {
   font-size: 12px;
   line-height: 1.8;
-  color: #7c8970;
+  color: #526348;
 }
 .rules-dialog h3 {
   font-size: 12px;
@@ -1193,7 +1193,7 @@ th svg {
 }
 .rules-dialog table {
   margin-top: 20px;
-  font-size: 10px;
+  font-size: 12px;
 }
 .rules-dialog th,
 .rules-dialog td {
@@ -1256,7 +1256,7 @@ th svg {
   }
   .map-legend {
     gap: 8px;
-    font-size: 7px;
+    font-size: 10px;
     left: 10px;
     padding: 8px;
   }
@@ -1286,7 +1286,7 @@ th svg {
     gap: 20px;
   }
   .forecast-top strong {
-    font-size: 9px;
+    font-size: 12px;
   }
   .forecast-chip {
     display: none;
@@ -1308,13 +1308,13 @@ th svg {
     height: 32px;
   }
   .header-right .text-button {
-    font-size: 10px;
+    font-size: 12px;
   }
   main {
     padding: 26px 5% 18px;
   }
   .eyebrow {
-    font-size: 7px;
+    font-size: 10px;
     letter-spacing: 1.3px;
   }
   h1 {
@@ -1322,7 +1322,7 @@ th svg {
     letter-spacing: -1px;
   }
   .page-intro p {
-    font-size: 10px;
+    font-size: 12px;
     line-height: 1.7;
   }
   .page-intro {
@@ -1354,13 +1354,13 @@ th svg {
     font-size: 11px;
   }
   .field-note {
-    font-size: 10px;
+    font-size: 12px;
   }
   .planner-footer {
     padding: 14px 0;
   }
   .planner-footer p {
-    font-size: 10px;
+    font-size: 12px;
   }
   .demo-button {
     font-size: 11px;
@@ -1383,7 +1383,7 @@ th svg {
     padding: 16px;
   }
   .forecast-top strong {
-    font-size: 10px;
+    font-size: 12px;
   }
   .feature-row {
     grid-template-columns: 1fr;
@@ -1391,7 +1391,7 @@ th svg {
     padding: 23px 0;
   }
   .feature-row p {
-    font-size: 10px;
+    font-size: 12px;
   }
   .feature-row strong {
     font-size: 11px;
@@ -1399,7 +1399,7 @@ th svg {
   .page-footer {
     flex-direction: column;
     gap: 7px;
-    font-size: 8px;
+    font-size: 11px;
   }
   .page-footer > span:last-child {
     justify-content: flex-start;
@@ -1443,12 +1443,12 @@ th svg {
     font-size: 12px;
   }
   .route-bottom {
-    font-size: 10px;
+    font-size: 12px;
   }
   .recommend-tag,
   .blocked-tag,
   .risk-badge {
-    font-size: 9px;
+    font-size: 12px;
   }
   .recommendation {
     flex-wrap: wrap;
@@ -1476,13 +1476,13 @@ th svg {
     font-size: 13px;
   }
   .results-heading .text-button {
-    font-size: 9px;
+    font-size: 12px;
   }
   .mode-tag {
-    font-size: 6px;
+    font-size: 9px;
   }
   .notes p {
-    font-size: 10px;
+    font-size: 12px;
   }
   .map-legend {
     gap: 8px;
@@ -1490,13 +1490,13 @@ th svg {
     bottom: 25px;
   }
   .map-legend span {
-    font-size: 7px;
+    font-size: 10px;
   }
   .rules-dialog {
     padding: 20px;
   }
   .forecast-time {
-    font-size: 8px;
+    font-size: 11px;
     line-height: 1.6;
     margin-left: 0;
   }
@@ -1513,8 +1513,8 @@ th svg {
   }
 }
 .route-average {
-  font-size: 9px;
-  color: #7b8971;
+  font-size: 12px;
+  color: #4b5c45;
   margin-top: 10px;
   line-height: 1.6;
 }
@@ -1524,7 +1524,7 @@ th svg {
   align-items: center;
   background: #f7f0dd;
   border: 1px solid #e8dcba;
-  color: #8f783d;
+  color: #70531e;
   padding: 11px 14px;
   border-radius: 7px;
   font-size: 11px;
@@ -1535,4 +1535,168 @@ th svg {
 }
 .planner label {
   font-size: 11px;
+}
+
+/* Readable comparison details and keyboard equivalents for map interactions. */
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+.risk-breakdown {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px 10px;
+  margin-top: 9px;
+  font-size: 11px;
+  color: #465a3d;
+  line-height: 1.5;
+}
+.planner-stale {
+  margin-top: 14px;
+  margin-bottom: 0;
+  padding: 10px;
+  font-size: 12px;
+  align-items: flex-start;
+  line-height: 1.5;
+}
+.stale-inputs svg {
+  flex-shrink: 0;
+}
+.map-stale {
+  margin: 0;
+  border: 0;
+  border-bottom: 1px solid #dfcca1;
+  border-radius: 0;
+  line-height: 1.5;
+}
+.checkpoint-jump {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 4px 0;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  font-size: 12px;
+  color: #285e49;
+}
+.wind-window {
+  display: block;
+  margin-bottom: 7px;
+}
+.point-popup {
+  font-size: 12px;
+}
+.point-popup p {
+  font-size: 12px;
+}
+.point-popup small {
+  font-size: 11px;
+  color: #526348;
+  display: block;
+  line-height: 1.6;
+}
+.route-average {
+  font-size: 12px;
+  color: #46573c;
+}
+.route-bottom {
+  font-size: 12px;
+  color: #46573c;
+}
+.notes p {
+  font-size: 12px;
+  color: #526348;
+}
+.risk-badge {
+  font-size: 11px;
+}
+.checkpoint-scroll td small {
+  font-size: 11px;
+  color: #526348;
+}
+.forecast-top {
+  flex-wrap: wrap;
+}
+.forecast-top > div {
+  flex-wrap: wrap;
+}
+.forecast-time {
+  line-height: 1.6;
+}
+.results-description > span {
+  line-height: 1.6;
+}
+.recommendation p {
+  font-size: 12px;
+  line-height: 1.7;
+  color: #4b643d;
+}
+.checkpoint-heading small {
+  line-height: 1.5;
+}
+@media (max-width: 1050px) {
+  .route-metrics .risk-badge {
+    margin-left: 0;
+  }
+  .route-name small {
+    display: inline;
+  }
+  .route-average {
+    font-size: 12px;
+  }
+  .route-bottom {
+    font-size: 12px;
+  }
+}
+@media (max-width: 700px) {
+  .map-legend {
+    flex-wrap: wrap;
+    right: 50px;
+    gap: 7px;
+  }
+  .map-legend span {
+    font-size: 10px;
+  }
+  .forecast-time {
+    font-size: 12px;
+  }
+  .slider-ticks {
+    font-size: 10px;
+  }
+  .page-footer {
+    font-size: 11px;
+  }
+  .checkpoint-heading > span {
+    min-width: 0;
+  }
+  .demo-button {
+    font-size: 12px;
+    flex-wrap: wrap;
+  }
+  .results-heading {
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+  .mode-tag {
+    font-size: 9px;
+  }
+}
+
+@media (max-width: 700px) {
+  .recommendation > div {
+    flex: 1 1 calc(100% - 36px);
+    min-width: 0;
+  }
+  .recommendation .text-button {
+    flex-basis: 100%;
+    margin-left: 30px;
+    justify-content: flex-start;
+  }
 }

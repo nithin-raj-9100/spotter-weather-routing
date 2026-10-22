@@ -12,7 +12,7 @@ Show departure time zone, weight in lb and the 10/25/50-mile choices. Explain th
 
 Use default Chicago–Detroit or another nearby-city pair, departure an hour ahead, 32,000 lb, 25-mile spacing. Click Find the best route. Show three road routes and the provider label. Explain that native alternatives can be augmented by labelled real waypoint detours; the app does not fabricate routes.
 
-Select different route cards. Show drive time, distance, risk breakdown, average score and arrival. Open a checkpoint popup and the table. Note the forecast bucket and ETA.
+Select different route cards. Show drive time, distance, risk breakdown, average score and arrival. Open a checkpoint popup and the table. Note the precipitation bucket, conservative wind bracket and ETA, all labelled with the viewer’s timezone.
 
 ## 1:45–2:45 — Weather corridor
 
@@ -20,7 +20,7 @@ Move the slider from departure to +12h, +24h and +48h. Change wind, rain and sno
 
 ## 2:45–3:45 — Demo and trade-offs
 
-Click Explore a sample trip. Clearly identify “DEMO · SYNTHETIC WEATHER”. Select each route and compare severe/high miles. Explain that the deterministic moving storm helps reviewers inspect meaningful risk differences even when live conditions are calm.
+Click Explore Chicago–Detroit demo. Clearly identify “DEMO · SYNTHETIC WEATHER”. Select each route and compare severe/high miles. Explain that the deterministic moving storm helps reviewers inspect meaningful risk differences even when live conditions are calm.
 
 Change load to 45,000 lb and spacing to 10 miles, then re-run the demo. Point out that the changed-input notice protects against mistaking old results for new inputs. Results may change with checkpoint spacing because this is a sampling model.
 
@@ -37,7 +37,7 @@ Open `risk.py`, `geometry.py`, `providers.py`, and `service.py`.
 - Pure risk logic separated from provider code.
 - Road-distance sampling and segment-duration ETA interpolation.
 - Liquid rain vs snow depth unit conversions.
-- UTC handling and explicit coverage checks.
+- UTC handling, conservative wind brackets, absolute hourly forecast coverage and a shared 75-second planning deadline.
 - Worst-endpoint interval aggregation, including the last interval.
 - Batches, caching and deduplication.
 

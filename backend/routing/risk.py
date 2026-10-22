@@ -39,11 +39,15 @@ def classify(wind: float, rain: float, snow: float, load: float) -> dict:
         reasons.append("Wind ≥35 mph with load >40,000 lb: severe.")
     components = {"wind": wind_risk, "rain": rain_risk, "snow": snow_risk}
     level = max(components.values())
-    if not reasons:
-        drivers = [name for name, value in components.items() if value == level]
-        reasons.append(
-            f"{', '.join(drivers).capitalize()} determines {LABELS[level].lower()} risk."
-        )
+    drivers = [name.capitalize() for name, value in components.items() if value == level]
+    verb = "determines" if len(drivers) == 1 else "determine"
+    names = drivers[0] if len(drivers) == 1 else f"{', '.join(drivers[:-1])} and {drivers[-1]}"
+    explanation = (
+        "All weather conditions are Low risk."
+        if level == 0
+        else f"{names} {verb} {LABELS[level]} risk."
+    )
+    reasons.insert(0, explanation)
     return {"level": level, "label": LABELS[level], "components": components, "reasons": reasons}
 
 
