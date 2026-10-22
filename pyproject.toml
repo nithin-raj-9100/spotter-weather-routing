@@ -1,0 +1,17 @@
+[project]
+name = "spotter-weather-routing"
+version = "1.0.0"
+description = "Weather-aware truck route comparison — React and Django"
+requires-python = ">=3.12"
+dependencies = ["django>=5.2,<5.3", "httpx>=0.28,<0.29", "whitenoise>=6.9,<7", "gunicorn>=23,<24"]
+
+[dependency-groups]
+dev = ["ruff>=0.12"]
+
+[tool.ruff]
+line-length = 100
+target-version = "py312"
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "B", "UP"]
+ignore = ["E501"]
